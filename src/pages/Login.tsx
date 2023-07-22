@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = async (): Promise<void> => {
     setError("");
     const result = await login({ username, password });
-    console.log("Login button clicked!", result);
+    // console.log("Login button clicked!", result);
     if ("error" in result) {
       setError("Error Occured");
     } else if (result.data) {
