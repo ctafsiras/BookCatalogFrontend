@@ -1,26 +1,16 @@
-// src/components/BookDetails.js
-
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { useQuery } from "react-query";
-import { fetchBookDetails } from "../api";
+import { useParams } from "react-router-dom";
+import { useGetSingleBookQuery } from "../redux/features/book/bookEndpoint";
+import Loading from "../components/Loading";
+import {useAppSelector} from "../redux/hooks";
 
 const BookDetails = () => {
-  const { bookId } = useParams();
-  const history = useHistory();
-
-  // Fetch book details using RTK Query or any other data fetching method
-  const {
-    data: book,
-    isLoading,
-    isError,
-  } = useQuery(["book", bookId], () => fetchBookDetails(bookId));
-
+  const {user}=useAppSelector((state)=>state.user)
+  const { id } = useParams();
+  const { data, isError, isLoading } = useGetSingleBookQuery(id);
   const handleEdit = () => {
-    // Redirect to the Edit Book page with the bookId as a parameter
-    history.push(`/edit-book/${bookId}`);
+    // history.push(`/edit-book/${bookId}`);
   };
-
+  console.log(data);
   const handleDelete = () => {
     // Show confirmation dialogue and delete the book if confirmed
     const confirmDelete = window.confirm(
@@ -39,30 +29,30 @@ const BookDetails = () => {
     // Example: submitReview(bookId, reviewData);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error fetching book details.</div>;
+  if (isLoading) return <Loading />;
+  // if (isError) return <div>Error fetching book details.</div>;
 
   return (
-    <div>
+    <div className="mx-16">
       <h1 className="text-4xl font-bold mb-4">Book Details</h1>
       <div>
         <p>
-          <strong>Title:</strong> {book.title}
+          <strong>Title:</strong> {data?.data.title}
         </p>
         <p>
-          <strong>Author:</strong> {book.author}
+          <strong>Author:</strong> {data?.data.author}
         </p>
         <p>
-          <strong>Genre:</strong> {book.genre}
+          <strong>Genre:</strong> {data?.data.genre}
         </p>
         <p>
-          <strong>Publication Date:</strong> {book.publicationDate}
+          <strong>Publication Date:</strong> {data?.data.publicationYear}
         </p>
       </div>
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-2">Reviews</h2>
         {/* Display book reviews here */}
-        {book.reviews.map((review) => (
+        {data?.data.reviews.map((review) => (
           <div key={review.id} className="mb-2">
             <p>{review.text}</p>
           </div>
@@ -70,7 +60,7 @@ const BookDetails = () => {
       </div>
       {/* Add review submission form for authenticated users */}
       {/* Implement authentication logic and display the form conditionally */}
-      {authenticatedUser && (
+      {user && (
         <form onSubmit={handleSubmitReview} className="mt-4">
           <textarea
             rows="4"
@@ -88,7 +78,7 @@ const BookDetails = () => {
       )}
       {/* Add Edit and Delete buttons for authenticated users */}
       {/* Implement authentication logic and display the buttons conditionally */}
-      {authenticatedUser && (
+      {user && (
         <div className="mt-4">
           <button
             onClick={handleEdit}

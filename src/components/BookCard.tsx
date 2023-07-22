@@ -1,7 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface IBook {
-  name: string;
+  title: string;
   genre: string;
   publicationYear: number;
   author: string;
@@ -9,6 +10,7 @@ interface IBook {
 }
 
 export function BookCard({ book }: { book: IBook }) {
+  const navigate = useNavigate();
   return (
     <div className="w-[300px] rounded-md border">
       <img
@@ -18,28 +20,31 @@ export function BookCard({ book }: { book: IBook }) {
       />
       <div className="p-4">
         <h1 className="inline-flex items-center text-lg font-semibold">
-          {book.name} &nbsp; <ArrowUpRight className="h-4 w-4" />
+          {book.title} &nbsp; <ArrowUpRight className="h-4 w-4" />
         </h1>
         <p className="mt-3 text-sm text-gray-600">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi,
           debitis?
         </p>
         <div className="mt-4">
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            #{book.author}
-          </span>
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            Author#{book.publicationYear}
-          </span>
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            #{book.genre}
-          </span>
+          <p className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
+            Author #{book.author}
+          </p>
+
+          <p className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
+            Publication Year #{book.publicationYear}
+          </p>
+
+          <p className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
+            Genre #{book.genre}
+          </p>
         </div>
         <button
           type="button"
+          onClick={() => navigate(`/book/${book?.id}`)}
           className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
         >
-          Read
+          Details
         </button>
       </div>
     </div>

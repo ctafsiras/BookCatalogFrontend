@@ -1,10 +1,13 @@
 // src/components/AddNewBook.js
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useAddBookMutation } from "../redux/features/book/bookEndpoint";
+import { toast } from "react-toastify";
 
 const AddNewBook = () => {
+  const [addBook] = useAddBookMutation();
   const [bookData, setBookData] = useState({
-    name: "",
+    title: "",
     author: "",
     publicationYear: "",
     genre: "",
@@ -18,17 +21,24 @@ const AddNewBook = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // You can implement API call or state management logic here
     console.log("New Book Data:", bookData);
+    const result = await addBook(bookData);
+    if (result.data) {
+      toast("Book added successfully!");
+      setBookData({
+        title: "",
+        author: "",
+        publicationYear: "",
+        genre: "",
+      });
+    } else {
+      toast.error("Something went wrong!");
+    }
     // Reset the form after submission
-    setBookData({
-      name: "",
-      author: "",
-      publicationYear: "",
-      genre: "",
-    });
+    console.log(result);
   };
 
   return (
@@ -36,14 +46,14 @@ const AddNewBook = () => {
       <h1 className="text-4xl font-bold mb-4">Add New Book</h1>
       <form onSubmit={handleSubmit} className="max-w-md">
         <div className="mb-4">
-          <label htmlFor="name" className="block mb-1">
-            Name:
+          <label htmlFor="title" className="block mb-1">
+            Title:
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={bookData.name}
+            id="title"
+            name="title"
+            value={bookData.title}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
             required

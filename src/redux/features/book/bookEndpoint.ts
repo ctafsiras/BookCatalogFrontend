@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { api } from "../../api";
 
 const bookEndpoint = api.injectEndpoints({
@@ -8,17 +10,17 @@ const bookEndpoint = api.injectEndpoints({
     getRecentBooks: builder.query({
       query: () => "/book/recent",
     }),
-    // getBook: builder.query<Book, string>({
-    //   query: (id) => `/books/${id}`,
-    // }),
+    getSingleBook: builder.query({
+      query: (id) => `/book/${id}`,
+    }),
 
-    // addBook: builder.mutation<Book, Book>({
-    //   query: (book) => ({
-    //     url: "/books",
-    //     method: "POST",
-    //     body: book,
-    //   }),
-    // }),
+    addBook: builder.mutation({
+      query: (book) => ({
+        url: "/book/create",
+        method: "POST",
+        body: book,
+      }),
+    }),
 
     // updateBook: builder.mutation<Book, Book>({
     //   query: (book) => ({
@@ -39,4 +41,5 @@ const bookEndpoint = api.injectEndpoints({
   }),
 });
 
-export const { useGetBooksQuery, useGetRecentBooksQuery } = bookEndpoint;
+export const { useGetBooksQuery, useGetRecentBooksQuery, useAddBookMutation, useGetSingleBookQuery } =
+  bookEndpoint;

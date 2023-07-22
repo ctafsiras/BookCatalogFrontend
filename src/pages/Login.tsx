@@ -1,20 +1,34 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLoginMutation } from "../redux/features/user/userEndpoint";
+import { useAppDispatch } from "../redux/hooks";
+import { authenticate } from "../redux/features/user/userSlice";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle login logic here (e.g., API call or validation)
-    console.log("Login button clicked!");
+  const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
+  const handleSubmit = async (): Promise<void> => {
+    setError("");
+    const result = await login({ username, password });
+    console.log("Login button clicked!", result);
+    if (result.error) {
+      setError(result?.error?.status);
+    } else if (result.data) {
+      dispatch(authenticate(result?.data?.data));
+      navigate("/");
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-80">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
-        <form onSubmit={handleSubmit}>
+        <div>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -49,13 +63,14 @@ const Login = () => {
               required
             />
           </div>
+          {error && <p className="text-red-500 my-2 text-xs italic">{error}</p>}
           <button
-            type="submit"
+            onClick={handleSubmit}
             className="w-full bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 focus:outline-none"
           >
             Login
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

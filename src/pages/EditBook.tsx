@@ -1,9 +1,5 @@
-// src/components/EditBook.js
-
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useQuery, useMutation } from 'react-query';
-import { fetchBookDetails, updateBook } from '../api';
+import { useParams } from 'react-router-dom';
 
 const EditBook = () => {
   const { bookId } = useParams();

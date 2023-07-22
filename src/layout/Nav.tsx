@@ -1,32 +1,39 @@
 import { Menu, X } from "lucide-react";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { logout } from "../redux/features/user/userSlice";
 
-const menuItems = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "All Books",
-    href: "/all-books",
-  },
-  {
-    name: "Add New Book",
-    href: "/add-new-book",
-  },
-  {
-    name: "Sign In",
-    href: "/login",
-  },
-  {
-    name: "Sign Up",
-    href: "/signup",
-  },
-];
 export default function Nav() {
+  const dispatch = useAppDispatch();
+  const menuItems = [
+    {
+      name: "Home",
+      href: "/",
+    },
+    {
+      name: "All Books",
+      href: "/all-books",
+    },
+  ];
+  const protectedMenuItems = [
+    {
+      name: "Add New Book",
+      href: "/add-new-book",
+    },
+  ];
+  const authMenuItems = [
+    {
+      name: "Sign In",
+      href: "/login",
+    },
+    {
+      name: "Sign Up",
+      href: "/signup",
+    },
+  ];
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const user = useAppSelector((state) => state.user.user);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -62,15 +69,36 @@ export default function Nav() {
                   <NavLink to={item.href}>{item.name}</NavLink>
                 </li>
               ))}
+              {user &&
+                protectedMenuItems.map((item) => (
+                  <li
+                    key={item.name}
+                    className="text-sm font-semibold text-gray-800 hover:text-gray-900"
+                  >
+                    <NavLink to={item.href}>{item.name}</NavLink>
+                  </li>
+                ))}
+              {!user &&
+                authMenuItems.map((item) => (
+                  <li
+                    key={item.name}
+                    className="text-sm font-semibold text-gray-800 hover:text-gray-900"
+                  >
+                    <NavLink to={item.href}>{item.name}</NavLink>
+                  </li>
+                ))}
             </ul>
           </div>
           <div className="hidden lg:block">
-            <button
-              type="button"
-              className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            >
-              Button text
-            </button>
+            {user && (
+              <button
+                type="button"
+                onClick={() => dispatch(logout())}
+                className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Logout
+              </button>
+            )}
           </div>
           <div className="lg:hidden">
             <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
@@ -123,12 +151,14 @@ export default function Nav() {
                       ))}
                     </nav>
                   </div>
-                  <button
-                    type="button"
-                    className="mt-4 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                  >
-                    Button text
-                  </button>
+                  {user && (
+                    <button
+                      type="button"
+                      className="mt-4 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    >
+                      Logout
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
