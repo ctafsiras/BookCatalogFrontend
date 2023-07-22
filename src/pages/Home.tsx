@@ -1,46 +1,17 @@
 "use client";
 
 import { BookCard } from "../components/BookCard";
-const books = [
-  {
-    name: "Harbarkl",
-    author: "jflsdkjfl",
-    publicationYear: 2043,
-    genre: "fkdsj",
-  },
-  {
-    name: "Harbarkl",
-    author: "jflsdkjfl",
-    publicationYear: 2043,
-    genre: "fkdsj",
-  },
-  {
-    name: "Harbarkl",
-    author: "jflsdkjfl",
-    publicationYear: 2043,
-    genre: "fkdsj",
-  },
-  {
-    name: "Harbarkl",
-    author: "jflsdkjfl",
-    publicationYear: 2043,
-    genre: "fkdsj",
-  },
-  {
-    name: "Harbarkl",
-    author: "jflsdkjfl",
-    publicationYear: 2043,
-    genre: "fkdsj",
-  },
-];
+import { useGetBooksQuery } from "../redux/features/book/bookEndpoint";
+
 export function Home() {
+  const { isError, data, isLoading } = useGetBooksQuery(undefined);
   return (
     <div className="w-full">
       <h2 className="text-3xl font-bold text-center my-4">
         Our Recently Added Books
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-        {books.map((book, i) => (
+        {data?.data?.map((book, i) => (
           <BookCard key={i} book={book} />
         ))}
       </div>
