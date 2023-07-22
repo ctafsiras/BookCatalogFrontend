@@ -7,14 +7,7 @@ import {
   useAddToWishListMutation,
 } from "../redux/features/user/userEndpoint";
 import { toast } from "react-toastify";
-
-interface IBook {
-  title: string;
-  genre: string;
-  publicationYear: number;
-  author: string;
-  reviews?: string[];
-}
+import { IBook } from "../types/book";
 
 export function BookCard({ book }: { book: IBook }) {
   const { user } = useAppSelector((state) => state.user);

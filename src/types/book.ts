@@ -1,6 +1,7 @@
 export interface IBook {
-  name: string;
+  title: string;
   genre: string;
   publicationYear: number;
-  reviews: string[];
+  author: string;
+  reviews?: string[];
 }
