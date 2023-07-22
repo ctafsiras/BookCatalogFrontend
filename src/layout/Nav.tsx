@@ -1,6 +1,6 @@
 import { Menu, X } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const menuItems = [
   {
@@ -10,6 +10,10 @@ const menuItems = [
   {
     name: "All Books",
     href: "/all-books",
+  },
+  {
+    name: "Add New Book",
+    href: "/add-new-book",
   },
   {
     name: "Sign In",
@@ -55,7 +59,7 @@ export default function Nav() {
                   key={item.name}
                   className="text-sm font-semibold text-gray-800 hover:text-gray-900"
                 >
-                  <Link to={item.href}>{item.name}</Link>
+                  <NavLink to={item.href}>{item.name}</NavLink>
                 </li>
               ))}
             </ul>
