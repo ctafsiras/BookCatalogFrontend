@@ -22,7 +22,7 @@ export function BookCard({ book }: { book: IBook }) {
   const [addToWishList] = useAddToWishListMutation();
   const navigate = useNavigate();
   const handleWishList = async (id: string) => {
-    const result = await addToWishList({ userId: user.id, bookId: id });
+    const result = await addToWishList({ userId: user?.id, bookId: id });
     if (result.data) {
       toast("Book added to wish list successfully");
     } else {
