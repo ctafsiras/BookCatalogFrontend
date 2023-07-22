@@ -24,7 +24,7 @@ const SignUp = () => {
       dispatch(authenticate(result.data.data));
       navigate("/");
     }
-    console.log("Login button clicked!", result);
+    // console.log("Login button clicked!", result);
   };
 
   return (
