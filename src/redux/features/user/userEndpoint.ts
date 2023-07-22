@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { api } from "../../api";
 
 export interface IUser {
@@ -24,7 +25,34 @@ const userEndpoint = api.injectEndpoints({
         body: data,
       }),
     }),
+    addToWishList: builder.mutation({
+      query: ({ bookId, userId }) => ({
+        url: `/user/addToWishList`,
+        method: "POST",
+        body: { bookId, userId },
+      }),
+    }),
+    addToReadingList: builder.mutation({
+      query: ({ bookId, userId }) => ({
+        url: `/user/addToReadingList`,
+        method: "POST",
+        body: { bookId, userId },
+      }),
+    }),
+    markComplete: builder.mutation({
+      query: ({ bookId, userId }) => ({
+        url: `/user/makeBookFinished`,
+        method: "POST",
+        body: { bookId, userId },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation } = userEndpoint;
+export const {
+  useLoginMutation,
+  useSignupMutation,
+  useAddToReadingListMutation,
+  useAddToWishListMutation,
+  useMarkCompleteMutation,
+} = userEndpoint;

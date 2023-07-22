@@ -21,6 +21,10 @@ export default function Nav() {
       name: "Add New Book",
       href: "/add-new-book",
     },
+    {
+      name: "Profile",
+      href: "/profile",
+    },
   ];
   const authMenuItems = [
     {
