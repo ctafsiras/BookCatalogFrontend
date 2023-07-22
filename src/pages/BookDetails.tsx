@@ -1,18 +1,21 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useAddReviewMutation,
   useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/features/book/bookEndpoint";
 import Loading from "../components/Loading";
 import { useAppSelector } from "../redux/hooks";
 import { toast } from "react-toastify";
-
+import { useState } from "react";
 const BookDetails = () => {
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
   const { id } = useParams();
-  const { data, isError, isLoading } = useGetSingleBookQuery(id);
+  const [reviewText, setReviewText] = useState("");
+  const { data, refetch, isLoading } = useGetSingleBookQuery(id);
   const [deleteBook] = useDeleteBookMutation();
+  const [addReview] = useAddReviewMutation();
   const handleEdit = () => {
     // history.push(`/edit-book/${bookId}`);
     navigate(`/edit-book/${id!}`);
@@ -31,11 +34,16 @@ const BookDetails = () => {
       }
     }
   };
+  console.log(reviewText);
 
-  const handleSubmitReview = (event) => {
+  const handleSubmitReview = async (event) => {
     event.preventDefault();
-    // Implement review submission logic using RTK Query or any other method
-    // Example: submitReview(bookId, reviewData);
+    const result = await addReview({ id, review: reviewText });
+    if (result.data) {
+      toast("Review added successfully");
+      setReviewText("");
+      await refetch();
+    }
   };
 
   if (isLoading) return <Loading />;
@@ -61,9 +69,9 @@ const BookDetails = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-2">Reviews</h2>
         {/* Display book reviews here */}
-        {data?.data.reviews.map((review) => (
-          <div key={review.id} className="mb-2">
-            <p>{review.text}</p>
+        {data?.data.reviews.map((review, i) => (
+          <div key={i} className="mb-2">
+            <p>{i+1}. {review}</p>
           </div>
         ))}
       </div>
@@ -73,6 +81,8 @@ const BookDetails = () => {
         <form onSubmit={handleSubmitReview} className="mt-4">
           <textarea
             rows="4"
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
             placeholder="Write your review..."
             className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
             required

@@ -2,12 +2,12 @@ import { BookCard } from "../components/BookCard";
 import FilterOptions from "../components/FilterOptions";
 import Loading from "../components/Loading";
 import SearchBar from "../components/SearchBar";
-import { useGetRecentBooksQuery } from "../redux/features/book/bookEndpoint";
+import { useGetBooksQuery } from "../redux/features/book/bookEndpoint";
 import { useState } from "react";
 
 const AllBooksPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { isError, data, isLoading } = useGetRecentBooksQuery(undefined);
+  const { isError, data, isLoading } = useGetBooksQuery(undefined);
   const onSearch = (searchTerm) => {
     console.log(searchTerm);
   };

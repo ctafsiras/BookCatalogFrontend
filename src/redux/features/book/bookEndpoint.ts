@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { api } from "../../api";
@@ -22,14 +23,20 @@ const bookEndpoint = api.injectEndpoints({
       }),
     }),
 
-    // updateBook: builder.mutation<Book, Book>({
-    //   query: (book) => ({
-    //     url: `/books/${book.id}`,
-    //     method: "PUT",
-
-    //     body: book,
-    //   }),
-    // }),
+    updateBook: builder.mutation({
+      query: ({ id, book }) => ({
+        url: `/book/${id}`,
+        method: "PATCH",
+        body: book,
+      }),
+    }),
+    addReview: builder.mutation({
+      query: ({ id, review }) => ({
+        url: `/book/add-review/${id}`,
+        method: "PATCH",
+        body: { review },
+      }),
+    }),
 
     deleteBook: builder.mutation({
       query: (id) => ({
@@ -40,5 +47,12 @@ const bookEndpoint = api.injectEndpoints({
   }),
 });
 
-export const { useGetBooksQuery, useGetRecentBooksQuery, useAddBookMutation, useGetSingleBookQuery, useDeleteBookMutation } =
-  bookEndpoint;
+export const {
+  useGetBooksQuery,
+  useGetRecentBooksQuery,
+  useAddBookMutation,
+  useGetSingleBookQuery,
+  useUpdateBookMutation,
+  useAddReviewMutation,
+  useDeleteBookMutation,
+} = bookEndpoint;
