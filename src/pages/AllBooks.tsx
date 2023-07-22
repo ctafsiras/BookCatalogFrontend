@@ -1,19 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { BookCard } from "../components/BookCard";
-import FilterOptions from "../components/FilterOptions";
 import Loading from "../components/Loading";
-import SearchBar from "../components/SearchBar";
 import { useGetBooksQuery } from "../redux/features/book/bookEndpoint";
 import { useState } from "react";
+import { IBook } from "../types/book";
 
 const AllBooksPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { isError, data, isLoading } = useGetBooksQuery(undefined);
-  const onSearch = (searchTerm) => {
-    console.log(searchTerm);
-  };
-  const onFilter = (searchTerm) => {
-    console.log(searchTerm);
-  };
+  const { data, isLoading } = useGetBooksQuery(undefined);
 
   return (
     <div className="px-4 md:px-8">
@@ -30,12 +27,14 @@ const AllBooksPage = () => {
           Search
         </button>
       </div>
-      <FilterOptions onFilter={onFilter} />
+      {/* <FilterOptions onFilter={onFilter} /> */}
       {isLoading && <Loading />}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data?.data
-          ?.filter((book) => book?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
-          .map((book, i) => (
+          ?.filter((book: { title: string }) =>
+            book?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((book: IBook, i: number) => (
             <BookCard key={i} book={book} />
           ))}
       </div>

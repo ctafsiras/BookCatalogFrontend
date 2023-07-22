@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useState } from "react";
 import { useLoginMutation } from "../redux/features/user/userEndpoint";
 import { useAppDispatch } from "../redux/hooks";
 import { authenticate } from "../redux/features/user/userSlice";
-import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,8 +19,8 @@ const Login = () => {
     setError("");
     const result = await login({ username, password });
     console.log("Login button clicked!", result);
-    if (result.error) {
-      setError(result?.error?.status);
+    if ("error" in result) {
+      setError("Error Occured");
     } else if (result.data) {
       dispatch(authenticate(result?.data?.data));
       navigate("/");

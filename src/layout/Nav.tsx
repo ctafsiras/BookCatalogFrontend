@@ -1,6 +1,6 @@
 import { Menu, X } from "lucide-react";
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout } from "../redux/features/user/userSlice";
 

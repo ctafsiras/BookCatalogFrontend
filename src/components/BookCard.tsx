@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -14,17 +15,17 @@ export function BookCard({ book }: { book: IBook }) {
   const [addToReadingList] = useAddToReadingListMutation();
   const [addToWishList] = useAddToWishListMutation();
   const navigate = useNavigate();
-  const handleWishList = async (id: string) => {
-    const result = await addToWishList({ userId: user?.id, bookId: id });
-    if (result.data) {
+  const handleWishList = async (id: string): Promise<void> => {
+    const result = await addToWishList({ userId: user!.id, bookId: id });
+    if ("data" in result) {
       toast("Book added to wish list successfully");
     } else {
       toast.error("Book added to wish list failed");
     }
   };
-  const handleReadList = async (id: string) => {
-    const result = await addToReadingList({ userId: user.id, bookId: id });
-    if (result.data) {
+  const handleReadList = async (id: string): Promise<void> => {
+    const result = await addToReadingList({ userId: user!.id, bookId: id });
+    if ("data" in result) {
       toast("Book added to wish list successfully");
     } else {
       toast.error("Book added to wish list failed");

@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // src/components/AddNewBook.js
 
 import { useState } from "react";
@@ -13,7 +17,7 @@ const AddNewBook = () => {
     genre: "",
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
     setBookData((prevData) => ({
       ...prevData,
@@ -21,12 +25,12 @@ const AddNewBook = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // You can implement API call or state management logic here
     console.log("New Book Data:", bookData);
     const result = await addBook(bookData);
-    if (result.data) {
+    if ("data" in result) {
       toast("Book added successfully!");
       setBookData({
         title: "",
@@ -37,8 +41,6 @@ const AddNewBook = () => {
     } else {
       toast.error("Something went wrong!");
     }
-    // Reset the form after submission
-    console.log(result);
   };
 
   return (

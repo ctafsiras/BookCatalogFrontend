@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 "use client";
 
 import { BookCard } from "../components/BookCard";
 import Loading from "../components/Loading";
 import { useGetRecentBooksQuery } from "../redux/features/book/bookEndpoint";
+import { IBook } from "../types/book";
 
 export function Home() {
-  const { isError, data, isLoading } = useGetRecentBooksQuery(undefined);
+  const { data, isLoading } = useGetRecentBooksQuery(undefined);
   return (
     <div className="w-full">
       <h2 className="text-3xl font-bold text-center my-4">
@@ -13,7 +17,7 @@ export function Home() {
       </h2>
       {isLoading && <Loading />}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-        {data?.data?.map((book, i) => (
+        {data?.data?.map((book: IBook, i: number) => (
           <BookCard key={i} book={book} />
         ))}
       </div>

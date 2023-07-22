@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useState } from "react";
 import { useSignupMutation } from "../redux/features/user/userEndpoint";
 import { useAppDispatch } from "../redux/hooks";
@@ -15,9 +18,9 @@ const SignUp = () => {
   const handleSubmit = async (): Promise<void> => {
     setError("");
     const result = await signup({ name, username, password });
-    if (result.error) {
-      setError(result?.error?.status);
-    } else if (result.data) {
+    if ("error" in result) {
+      setError('Error Occured');
+    } else if ("data" in result) {
       dispatch(authenticate(result.data.data));
       navigate("/");
     }

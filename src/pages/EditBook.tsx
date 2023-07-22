@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   useGetSingleBookQuery,
@@ -30,7 +33,7 @@ const EditBook = () => {
     }
   }, [data]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: {target: {name: any; value: any;};}) => {
     const { name, value } = event.target;
     setBookData((prevData) => ({
       ...prevData,
@@ -38,10 +41,10 @@ const EditBook = () => {
     }));
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e: {preventDefault: () => void;}) => {
     e.preventDefault()
     const result = await updateBook({ id, book: bookData });
-    if (result.data) {
+    if ("data" in result) {
       toast("Book updated successfully");
     } else {
       toast("Book updated failed");

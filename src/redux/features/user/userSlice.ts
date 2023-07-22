@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { IUser } from "../../../types/user";
 
-const initialState = {
+const initialState: { user: IUser | null } = {
   user: null,
 };
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    authenticate: (state, action) => {
+    authenticate: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
     logout: (state) => {

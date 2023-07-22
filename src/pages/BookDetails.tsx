@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useAddReviewMutation,
@@ -28,7 +32,7 @@ const BookDetails = () => {
     );
     if (confirmDelete) {
       const result = await deleteBook(id!);
-      if (result.data) {
+      if ("data" in result) {
         toast("Book deleted successfully");
         navigate("/");
       }
@@ -36,10 +40,10 @@ const BookDetails = () => {
   };
   console.log(reviewText);
 
-  const handleSubmitReview = async (event) => {
+  const handleSubmitReview = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const result = await addReview({ id, review: reviewText });
-    if (result.data) {
+    if ("data" in result) {
       toast("Review added successfully");
       setReviewText("");
       await refetch();
@@ -69,9 +73,11 @@ const BookDetails = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-2">Reviews</h2>
         {/* Display book reviews here */}
-        {data?.data.reviews.map((review, i) => (
+        {data?.data.reviews.map((review: string, i: number) => (
           <div key={i} className="mb-2">
-            <p>{i+1}. {review}</p>
+            <p>
+              {i + 1}. {review}
+            </p>
           </div>
         ))}
       </div>
@@ -80,7 +86,7 @@ const BookDetails = () => {
       {user && (
         <form onSubmit={handleSubmitReview} className="mt-4">
           <textarea
-            rows="4"
+            rows={4}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder="Write your review..."
