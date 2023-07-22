@@ -5,6 +5,9 @@ const bookEndpoint = api.injectEndpoints({
     getBooks: builder.query({
       query: () => "/book",
     }),
+    getRecentBooks: builder.query({
+      query: () => "/book/recent",
+    }),
     // getBook: builder.query<Book, string>({
     //   query: (id) => `/books/${id}`,
     // }),
@@ -36,4 +39,4 @@ const bookEndpoint = api.injectEndpoints({
   }),
 });
 
-export const { useGetBooksQuery } = bookEndpoint;
+export const { useGetBooksQuery, useGetRecentBooksQuery } = bookEndpoint;
