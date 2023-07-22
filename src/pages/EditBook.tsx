@@ -1,33 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import {useGetSingleBookQuery} from '../redux/features/book/bookEndpoint';
 
 const EditBook = () => {
-  const { bookId } = useParams();
-  const history = useHistory();
+  const { id } = useParams();
 
   const [bookData, setBookData] = useState({
     title: '',
     author: '',
     genre: '',
-    publicationDate: '',
+    publicationYear: '',
   });
 
-  // Fetch book details using RTK Query or any other data fetching method
-  const { data: book, isLoading, isError } = useQuery(['book', bookId], () =>
-    fetchBookDetails(bookId)
-  );
-
+  const { data, isLoading, isError } = useGetSingleBookQuery(id);
   // Use useEffect to update the form with fetched book data
   useEffect(() => {
-    if (book) {
+    if (data.data) {
       setBookData({
-        title: book.title,
-        author: book.author,
-        genre: book.genre,
-        publicationDate: book.publicationDate,
+        title: data?.data.title,
+        author: data?.data.author,
+        genre: data?.data.genre,
+        publicationYear: data?.data.publicationDate,
       });
     }
-  }, [book]);
+  }, [data]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

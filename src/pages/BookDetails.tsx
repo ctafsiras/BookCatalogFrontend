@@ -1,25 +1,34 @@
-import { useParams } from "react-router-dom";
-import { useGetSingleBookQuery } from "../redux/features/book/bookEndpoint";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useDeleteBookMutation,
+  useGetSingleBookQuery,
+} from "../redux/features/book/bookEndpoint";
 import Loading from "../components/Loading";
-import {useAppSelector} from "../redux/hooks";
+import { useAppSelector } from "../redux/hooks";
+import { toast } from "react-toastify";
 
 const BookDetails = () => {
-  const {user}=useAppSelector((state)=>state.user)
+  const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.user);
   const { id } = useParams();
   const { data, isError, isLoading } = useGetSingleBookQuery(id);
+  const [deleteBook] = useDeleteBookMutation();
   const handleEdit = () => {
     // history.push(`/edit-book/${bookId}`);
+    navigate(`/edit-book/${id!}`);
   };
   console.log(data);
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // Show confirmation dialogue and delete the book if confirmed
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this book?"
     );
     if (confirmDelete) {
-      // Implement delete book logic using RTK Query or any other method
-      // After deletion, redirect to the All Books page
-      // Example: deleteBook(bookId).then(() => history.push('/'));
+      const result = await deleteBook(id!);
+      if (result.data) {
+        toast("Book deleted successfully");
+        navigate("/");
+      }
     }
   };
 
