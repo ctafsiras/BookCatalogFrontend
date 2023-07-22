@@ -22,7 +22,6 @@ export function Home() {
         ))}
       </div>
 
-      {/* Features Section */}
       <div className="mx-auto my-32 max-w-7xl px-2 lg:px-8">
         <div className="grid grid-cols-1 gap-y-8 text-center sm:grid-cols-2 sm:gap-12 lg:grid-cols-4">
           <div>
